@@ -9,7 +9,7 @@ st.image(logo, width=200)  # Adjust width as needed
 st.title("PDP Premier Players Dashboard")
 
 # Load CSV
-df = pd.read_csv("pdp_premier.csv")
+df = pd.read_csv("1strounddraftinvitesPDP.csv")
 
 # Rename "Year" to "HS Grad Year"
 df = df.rename(columns={"Year": "HS Grad Year"})
