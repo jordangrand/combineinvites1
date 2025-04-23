@@ -4,7 +4,7 @@ from PIL import Image
 
 # Load and display logo
 logo = Image.open("USA_Baseball_team_logo.png")
-st.image(logo, width=200)  # Adjust width as needed
+st.image(logo, width=200)
 
 st.title("Combine Invites PDP Testing")
 
@@ -22,12 +22,25 @@ df = df.drop(columns=[
     "Drift Power Delta %", "ABSVAL DPWR Delta"
 ], errors="ignore")
 
-# Ensure numeric columns
-df["30 Total"] = pd.to_numeric(df["30 Total"], errors="coerce")
-df["Peak Power[W]"] = pd.to_numeric(df["Peak Power[W]"], errors="coerce")
-df["Peak Power BM[W/Kg]"] = pd.to_numeric(df["Peak Power BM[W/Kg]"], errors="coerce")
+# Define numeric columns to convert and round
+numeric_cols = [
+    "Height (in)", "Weight",
+    "10 yd Split (sec)", "20 yd Split(sec)", "30 Total",
+    "Green Box", "Green 3", "Agility Diff", "% Change",
+    "BJ Distance (ft)", "BJ Distance (in)",
+    "Drift GCT Delta %", "Drift Used Area Delta %", "ABSVAL DUA Delta",
+    "CMJ GCT[sec]", "CMJ Height[in]", "Max CMJ Height[in]",
+    "Peak Power[W]", "Peak Power BM[W/Kg]",
+    "LEFT DOWN", "LEFT 90", "LEFT UP", "RIGHT DOWN", "RIGHT 90", "RIGHT UP"
+]
 
-# Drop rows with missing values in key columns
+# Convert to numeric and round
+for col in numeric_cols:
+    df[col] = pd.to_numeric(df[col], errors="coerce")
+
+df[numeric_cols] = df[numeric_cols].round(1)
+
+# Drop rows with missing key values
 df = df.dropna(subset=[
     "NAME", "Location", "HS Grad Year", "Event", "Event Type",
     "30 Total", "Peak Power[W]", "Peak Power BM[W/Kg]"
@@ -42,52 +55,49 @@ grad_year = st.sidebar.selectbox("Select HS Grad Year", ["All"] + sorted(df["HS 
 event = st.sidebar.selectbox("Select Event", ["All"] + sorted(df["Event"].unique()))
 event_type = st.sidebar.selectbox("Select Event Type", ["All"] + sorted(df["Event Type"].unique()))
 
-# Toggle: Filter by 30 Total
+# Optional: 30 Total
 use_30_slider = st.sidebar.checkbox("Filter by 30 Total", value=True)
 if use_30_slider:
-    min_30 = round(df["30 Total"].min(), 2)
-    max_30 = round(df["30 Total"].max(), 2)
-    avg_30 = round(df["30 Total"].mean(), 2)
-
+    min_30 = df["30 Total"].min()
+    max_30 = df["30 Total"].max()
+    avg_30 = df["30 Total"].mean()
     st.sidebar.markdown(f"**Average 30 Total: {avg_30} sec**")
     thirty_total_range = st.sidebar.slider(
         "30 Total Range (sec)",
-        min_value=min_30,
-        max_value=max_30,
-        value=(min_30, max_30),
-        step=0.01
+        min_value=float(min_30),
+        max_value=float(max_30),
+        value=(float(min_30), float(max_30)),
+        step=0.1
     )
 
-# Toggle: Filter by Peak Power
+# Optional: Peak Power
 use_power_slider = st.sidebar.checkbox("Filter by Peak Power", value=True)
 if use_power_slider:
-    min_power = round(df["Peak Power[W]"].min(), 2)
-    max_power = round(df["Peak Power[W]"].max(), 2)
-    avg_power = round(df["Peak Power[W]"].mean(), 2)
-
+    min_power = df["Peak Power[W]"].min()
+    max_power = df["Peak Power[W]"].max()
+    avg_power = df["Peak Power[W]"].mean()
     st.sidebar.markdown(f"**Average Peak Power: {avg_power} W**")
     power_range = st.sidebar.slider(
         "Peak Power Range (W)",
-        min_value=min_power,
-        max_value=max_power,
-        value=(min_power, max_power),
+        min_value=float(min_power),
+        max_value=float(max_power),
+        value=(float(min_power), float(max_power)),
         step=1.0
     )
 
-# Toggle: Filter by Peak Power BM
+# Optional: Peak Power BM
 use_powerbm_slider = st.sidebar.checkbox("Filter by Peak Power BM (W/Kg)", value=True)
 if use_powerbm_slider:
-    min_powerbm = round(df["Peak Power BM[W/Kg]"].min(), 2)
-    max_powerbm = round(df["Peak Power BM[W/Kg]"].max(), 2)
-    avg_powerbm = round(df["Peak Power BM[W/Kg]"].mean(), 2)
-
-    st.sidebar.markdown(f"**Avg Peak Power BM:** {avg_powerbm} W/Kg")
+    min_powerbm = df["Peak Power BM[W/Kg]"].min()
+    max_powerbm = df["Peak Power BM[W/Kg]"].max()
+    avg_powerbm = df["Peak Power BM[W/Kg]"].mean()
+    st.sidebar.markdown(f"**Avg Peak Power BM: {avg_powerbm} W/Kg**")
     powerbm_range = st.sidebar.slider(
         "Peak Power BM Range (W/Kg)",
-        min_value=min_powerbm,
-        max_value=max_powerbm,
-        value=(min_powerbm, max_powerbm),
-        step=0.01
+        min_value=float(min_powerbm),
+        max_value=float(max_powerbm),
+        value=(float(min_powerbm), float(max_powerbm)),
+        step=0.1
     )
 
 # Apply filters
@@ -108,7 +118,6 @@ if event != "All":
 if event_type != "All":
     filtered_df = filtered_df[filtered_df["Event Type"] == event_type]
 
-# Apply slider filters if enabled
 if use_30_slider:
     filtered_df = filtered_df[
         (filtered_df["30 Total"] >= thirty_total_range[0]) &
@@ -127,6 +136,6 @@ if use_powerbm_slider:
         (filtered_df["Peak Power BM[W/Kg]"] <= powerbm_range[1])
     ]
 
-# Show result
+# Display results
 st.subheader("Filtered Results")
 st.dataframe(filtered_df)
