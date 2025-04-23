@@ -6,7 +6,7 @@ from PIL import Image
 logo = Image.open("USA_Baseball_team_logo.png")
 st.image(logo, width=200)  # Adjust width as needed
 
-st.title("PDP Premier Players Dashboard")
+st.title("Combine Invites PDP Testing")
 
 # Load CSV
 df = pd.read_csv("1strounddraftinvitesPDP.csv")
