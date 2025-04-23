@@ -15,13 +15,19 @@ df = pd.read_csv("1strounddraftinvitesPDP.csv")
 df = df.rename(columns={"Year": "HS Grad Year"})
 
 # Drop unnecessary columns
-df = df.drop(columns=["Last Name", "First Name", "DPL ID", "BirthDate", "25 Total", "NAS CMJ Height",	"NAS Peak Power[W]", "NAS Peak Power BM[W/Kg]",	"AS CMJ Height", "AS Peak Power[W]", "AS Peak Power BM[W/Kg]", "Drift Power Delta %", "ABSVAL DPWR Delta"], errors="ignore")
+df = df.drop(columns=[
+    "Last Name", "First Name", "DPL ID", "BirthDate", "25 Total",
+    "NAS CMJ Height", "NAS Peak Power[W]", "NAS Peak Power BM[W/Kg]",
+    "AS CMJ Height", "AS Peak Power[W]", "AS Peak Power BM[W/Kg]",
+    "Drift Power Delta %", "ABSVAL DPWR Delta"
+], errors="ignore")
 
-# Ensure "30 Total" is numeric
+# Ensure numeric columns
 df["30 Total"] = pd.to_numeric(df["30 Total"], errors="coerce")
+df["Peak Power[W]"] = pd.to_numeric(df["Peak Power[W]"], errors="coerce")
 
 # Drop rows with missing values in key columns
-df = df.dropna(subset=["NAME", "Location", "HS Grad Year", "Event", "Event Type", "30 Total"])
+df = df.dropna(subset=["NAME", "Location", "HS Grad Year", "Event", "Event Type", "30 Total", "Peak Power[W]"])
 
 # Sidebar Filters
 st.sidebar.header("Filter Player Data")
@@ -47,6 +53,21 @@ thirty_total_range = st.sidebar.slider(
     step=0.01
 )
 
+# Slider for Peak Power[W]
+min_power = round(df["Peak Power[W]"].min(), 2)
+max_power = round(df["Peak Power[W]"].max(), 2)
+avg_power = round(df["Peak Power[W]"].mean(), 2)
+
+st.sidebar.markdown(f"**Average Peak Power: {avg_power} W**")
+
+power_range = st.sidebar.slider(
+    "Peak Power Range (W)",
+    min_value=min_power,
+    max_value=max_power,
+    value=(min_power, max_power),
+    step=1.0
+)
+
 # Apply filters
 filtered_df = df.copy()
 
@@ -65,10 +86,15 @@ if event != "All":
 if event_type != "All":
     filtered_df = filtered_df[filtered_df["Event Type"] == event_type]
 
-# Apply slider filter
+# Apply slider filters
 filtered_df = filtered_df[
-    (filtered_df["30 Total"] >= thirty_total_range[0]) & 
+    (filtered_df["30 Total"] >= thirty_total_range[0]) &
     (filtered_df["30 Total"] <= thirty_total_range[1])
+]
+
+filtered_df = filtered_df[
+    (filtered_df["Peak Power[W]"] >= power_range[0]) &
+    (filtered_df["Peak Power[W]"] <= power_range[1])
 ]
 
 # Show result
