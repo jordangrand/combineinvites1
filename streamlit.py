@@ -15,7 +15,7 @@ df = pd.read_csv("1strounddraftinvitesPDP.csv")
 df = df.rename(columns={"Year": "HS Grad Year"})
 
 # Drop unnecessary columns
-df = df.drop(columns=["Last Name", "First Name", "BirthDate", "25 Total", "NAS CMJ Height",	"NAS Peak Power[W]", "NAS Peak Power BM[W/Kg]",	"AS CMJ Height", "AS Peak Power[W]", "AS Peak Power BM[W/Kg]", "Drift Power Delta %", "ABSVAL DPWR Delta"], "DPL ID", errors="ignore")
+df = df.drop(columns=["Last Name", "First Name", "BirthDate", "25 Total", "NAS CMJ Height",	"NAS Peak Power[W]", "NAS Peak Power BM[W/Kg]",	"AS CMJ Height", "AS Peak Power[W]", "AS Peak Power BM[W/Kg]", "Drift Power Delta %", "ABSVAL DPWR Delta"], errors="ignore")
 
 # Ensure "30 Total" is numeric
 df["30 Total"] = pd.to_numeric(df["30 Total"], errors="coerce")
