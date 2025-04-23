@@ -38,35 +38,37 @@ grad_year = st.sidebar.selectbox("Select HS Grad Year", ["All"] + sorted(df["HS 
 event = st.sidebar.selectbox("Select Event", ["All"] + sorted(df["Event"].unique()))
 event_type = st.sidebar.selectbox("Select Event Type", ["All"] + sorted(df["Event Type"].unique()))
 
-# Slider for 30 Total
-min_30 = round(df["30 Total"].min(), 2)
-max_30 = round(df["30 Total"].max(), 2)
-avg_30 = round(df["30 Total"].mean(), 2)
+# Toggle: Filter by 30 Total
+use_30_slider = st.sidebar.checkbox("Filter by 30 Total", value=True)
+if use_30_slider:
+    min_30 = round(df["30 Total"].min(), 2)
+    max_30 = round(df["30 Total"].max(), 2)
+    avg_30 = round(df["30 Total"].mean(), 2)
 
-st.sidebar.markdown(f"**Average 30 Total: {avg_30} sec**")
+    st.sidebar.markdown(f"**Average 30 Total: {avg_30} sec**")
+    thirty_total_range = st.sidebar.slider(
+        "30 Total Range (sec)",
+        min_value=min_30,
+        max_value=max_30,
+        value=(min_30, max_30),
+        step=0.01
+    )
 
-thirty_total_range = st.sidebar.slider(
-    "30 Total Range (sec)",
-    min_value=min_30,
-    max_value=max_30,
-    value=(min_30, max_30),
-    step=0.01
-)
+# Toggle: Filter by Peak Power
+use_power_slider = st.sidebar.checkbox("Filter by Peak Power", value=True)
+if use_power_slider:
+    min_power = round(df["Peak Power[W]"].min(), 2)
+    max_power = round(df["Peak Power[W]"].max(), 2)
+    avg_power = round(df["Peak Power[W]"].mean(), 2)
 
-# Slider for Peak Power[W]
-min_power = round(df["Peak Power[W]"].min(), 2)
-max_power = round(df["Peak Power[W]"].max(), 2)
-avg_power = round(df["Peak Power[W]"].mean(), 2)
-
-st.sidebar.markdown(f"**Average Peak Power: {avg_power} W**")
-
-power_range = st.sidebar.slider(
-    "Peak Power Range (W)",
-    min_value=min_power,
-    max_value=max_power,
-    value=(min_power, max_power),
-    step=1.0
-)
+    st.sidebar.markdown(f"**Average Peak Power: {avg_power} W**")
+    power_range = st.sidebar.slider(
+        "Peak Power Range (W)",
+        min_value=min_power,
+        max_value=max_power,
+        value=(min_power, max_power),
+        step=1.0
+    )
 
 # Apply filters
 filtered_df = df.copy()
@@ -86,16 +88,19 @@ if event != "All":
 if event_type != "All":
     filtered_df = filtered_df[filtered_df["Event Type"] == event_type]
 
-# Apply slider filters
-filtered_df = filtered_df[
-    (filtered_df["30 Total"] >= thirty_total_range[0]) &
-    (filtered_df["30 Total"] <= thirty_total_range[1])
-]
+# Apply slider filters only if enabled
+if use_30_slider:
+    filtered_df = filtered_df[
+        (filtered_df["30 Total"] >= thirty_total_range[0]) &
+        (filtered_df["30 Total"] <= thirty_total_range[1])
+    ]
 
-filtered_df = filtered_df[
-    (filtered_df["Peak Power[W]"] >= power_range[0]) &
-    (filtered_df["Peak Power[W]"] <= power_range[1])
-]
+if use_power_slider:
+    filtered_df = filtered_df[
+        (filtered_df["Peak Power[W]"] >= power_range[0]) &
+        (filtered_df["Peak Power[W]"] <= power_range[1])
+    ]
 
 # Show result
+st.subheader("Filtered Results")
 st.dataframe(filtered_df)
