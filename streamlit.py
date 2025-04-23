@@ -16,7 +16,7 @@ df = df.rename(columns={"Year": "HS Grad Year"})
 
 # Drop unnecessary columns
 df = df.drop(columns=[
-    "Last Name", "First Name", "DPL ID", "BirthDate", "25 Total",
+    "Last Name", "First Name", "DPL ID", "BirthDate", "25 Total", "Agility Diff", "% Change", "Drift GCT Delta %", "Drift Used Area Delta %", "ABSVAL DUA Delta",
     "NAS CMJ Height", "NAS Peak Power[W]", "NAS Peak Power BM[W/Kg]",
     "AS CMJ Height", "AS Peak Power[W]", "AS Peak Power BM[W/Kg]",
     "Drift Power Delta %", "ABSVAL DPWR Delta"
@@ -26,9 +26,8 @@ df = df.drop(columns=[
 numeric_cols = [
     "Height (in)", "Weight",
     "10 yd Split (sec)", "20 yd Split(sec)", "30 Total",
-    "Green Box", "Green 3", "Agility Diff", "% Change",
+    "Green Box", "Green 3",
     "BJ Distance (ft)", "BJ Distance (in)",
-    "Drift GCT Delta %", "Drift Used Area Delta %", "ABSVAL DUA Delta",
     "CMJ GCT[sec]", "CMJ Height[in]", "Max CMJ Height[in]",
     "Peak Power[W]", "Peak Power BM[W/Kg]",
     "LEFT DOWN", "LEFT 90", "LEFT UP", "RIGHT DOWN", "RIGHT 90", "RIGHT UP"
