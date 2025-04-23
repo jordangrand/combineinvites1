@@ -61,7 +61,7 @@ if use_30_slider:
     min_30 = df["30 Total"].min()
     max_30 = df["30 Total"].max()
     avg_30 = df["30 Total"].mean()
-    st.sidebar.markdown(f"**Average 30 Total: {avg_30} sec**")
+    st.sidebar.markdown(f"**Average 30 Total: {avg_30:.1f} sec**")
     thirty_total_range = st.sidebar.slider(
         "30 Total Range (sec)",
         min_value=float(min_30),
@@ -76,7 +76,7 @@ if use_power_slider:
     min_power = df["Peak Power[W]"].min()
     max_power = df["Peak Power[W]"].max()
     avg_power = df["Peak Power[W]"].mean()
-    st.sidebar.markdown(f"**Average Peak Power: {avg_power} W**")
+    st.sidebar.markdown(f"**Average Peak Power: {avg_power:.1f} W**")
     power_range = st.sidebar.slider(
         "Peak Power Range (W)",
         min_value=float(min_power),
@@ -91,7 +91,7 @@ if use_powerbm_slider:
     min_powerbm = df["Peak Power BM[W/Kg]"].min()
     max_powerbm = df["Peak Power BM[W/Kg]"].max()
     avg_powerbm = df["Peak Power BM[W/Kg]"].mean()
-    st.sidebar.markdown(f"**Avg Peak Power BM: {avg_powerbm} W/Kg**")
+    st.sidebar.markdown(f"**Avg Peak Power BM: {avg_powerbm:.1f} W/Kg**")
     powerbm_range = st.sidebar.slider(
         "Peak Power BM Range (W/Kg)",
         min_value=float(min_powerbm),
