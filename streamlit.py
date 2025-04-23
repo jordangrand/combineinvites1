@@ -50,7 +50,7 @@ event = st.sidebar.selectbox("Select Event", ["All"] + sorted(df["Event"].unique
 event_type = st.sidebar.selectbox("Select Event Type", ["All"] + sorted(df["Event Type"].unique()))
 
 # Optional: 30 Total
-use_30_slider = st.sidebar.checkbox("Filter by 30 Total", value=True)
+use_30_slider = st.sidebar.checkbox("Filter by 30 Total", value=False)
 if use_30_slider:
     min_30 = df["30 Total"].min()
     max_30 = df["30 Total"].max()
@@ -65,7 +65,7 @@ if use_30_slider:
     )
 
 # Optional: Peak Power
-use_power_slider = st.sidebar.checkbox("Filter by Peak Power", value=True)
+use_power_slider = st.sidebar.checkbox("Filter by Peak Power", value=False)
 if use_power_slider:
     min_power = df["Peak Power[W]"].min()
     max_power = df["Peak Power[W]"].max()
@@ -80,7 +80,7 @@ if use_power_slider:
     )
 
 # Optional: Peak Power BM
-use_powerbm_slider = st.sidebar.checkbox("Filter by Peak Power BM (W/Kg)", value=True)
+use_powerbm_slider = st.sidebar.checkbox("Filter by Peak Power BM (W/Kg)", value=False)
 if use_powerbm_slider:
     min_powerbm = df["Peak Power BM[W/Kg]"].min()
     max_powerbm = df["Peak Power BM[W/Kg]"].max()
