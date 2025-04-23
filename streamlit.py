@@ -25,9 +25,13 @@ df = df.drop(columns=[
 # Ensure numeric columns
 df["30 Total"] = pd.to_numeric(df["30 Total"], errors="coerce")
 df["Peak Power[W]"] = pd.to_numeric(df["Peak Power[W]"], errors="coerce")
+df["Peak Power BM[W/Kg]"] = pd.to_numeric(df["Peak Power BM[W/Kg]"], errors="coerce")
 
 # Drop rows with missing values in key columns
-df = df.dropna(subset=["NAME", "Location", "HS Grad Year", "Event", "Event Type", "30 Total", "Peak Power[W]"])
+df = df.dropna(subset=[
+    "NAME", "Location", "HS Grad Year", "Event", "Event Type",
+    "30 Total", "Peak Power[W]", "Peak Power BM[W/Kg]"
+])
 
 # Sidebar Filters
 st.sidebar.header("Filter Player Data")
@@ -70,6 +74,22 @@ if use_power_slider:
         step=1.0
     )
 
+# Toggle: Filter by Peak Power BM
+use_powerbm_slider = st.sidebar.checkbox("Filter by Peak Power BM (W/Kg)", value=True)
+if use_powerbm_slider:
+    min_powerbm = round(df["Peak Power BM[W/Kg]"].min(), 2)
+    max_powerbm = round(df["Peak Power BM[W/Kg]"].max(), 2)
+    avg_powerbm = round(df["Peak Power BM[W/Kg]"].mean(), 2)
+
+    st.sidebar.markdown(f"**Avg Peak Power BM:** {avg_powerbm} W/Kg")
+    powerbm_range = st.sidebar.slider(
+        "Peak Power BM Range (W/Kg)",
+        min_value=min_powerbm,
+        max_value=max_powerbm,
+        value=(min_powerbm, max_powerbm),
+        step=0.01
+    )
+
 # Apply filters
 filtered_df = df.copy()
 
@@ -88,7 +108,7 @@ if event != "All":
 if event_type != "All":
     filtered_df = filtered_df[filtered_df["Event Type"] == event_type]
 
-# Apply slider filters only if enabled
+# Apply slider filters if enabled
 if use_30_slider:
     filtered_df = filtered_df[
         (filtered_df["30 Total"] >= thirty_total_range[0]) &
@@ -99,6 +119,12 @@ if use_power_slider:
     filtered_df = filtered_df[
         (filtered_df["Peak Power[W]"] >= power_range[0]) &
         (filtered_df["Peak Power[W]"] <= power_range[1])
+    ]
+
+if use_powerbm_slider:
+    filtered_df = filtered_df[
+        (filtered_df["Peak Power BM[W/Kg]"] >= powerbm_range[0]) &
+        (filtered_df["Peak Power BM[W/Kg]"] <= powerbm_range[1])
     ]
 
 # Show result
