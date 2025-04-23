@@ -9,7 +9,7 @@ st.image(logo, width=200)
 st.title("Combine Invites PDP Testing")
 
 # Load CSV
-df = pd.read_csv("1strounddraftinvitesPDP.csv")
+df = pd.read_csv("DraftCombinePDPData.csv")
 
 # Rename "Year" to "HS Grad Year"
 df = df.rename(columns={"Year": "HS Grad Year"})
