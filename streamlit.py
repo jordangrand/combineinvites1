@@ -40,11 +40,6 @@ for col in numeric_cols:
 
 df[numeric_cols] = df[numeric_cols].round(1)
 
-# Drop rows with missing key values
-df = df.dropna(subset=[
-    "NAME", "Location", "HS Grad Year", "Event", "Event Type",
-    "30 Total", "Peak Power[W]", "Peak Power BM[W/Kg]"
-])
 
 # Sidebar Filters
 st.sidebar.header("Filter Player Data")
