@@ -11,6 +11,12 @@ st.title("PDP Premier Players Dashboard")
 # Load CSV
 df = pd.read_csv("1strounddraftinvitesPDP.csv")
 
+st.dataframe(
+    filtered_df,
+    use_container_width=True,
+    hide_index=True
+)
+
 # Rename "Year" to "HS Grad Year"
 df = df.rename(columns={"Year": "HS Grad Year"})
 
