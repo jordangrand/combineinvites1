@@ -19,7 +19,7 @@ df = df.drop(columns=[
     "Last Name", "First Name", "DPL ID", "BirthDate", "25 Total", "Agility Diff", "% Change", "Drift GCT Delta %", "Drift Used Area Delta %", "ABSVAL DUA Delta",
     "NAS CMJ Height", "NAS Peak Power[W]", "NAS Peak Power BM[W/Kg]",
     "AS CMJ Height", "AS Peak Power[W]", "AS Peak Power BM[W/Kg]",
-    "Drift Power Delta %", "ABSVAL DPWR Delta", "Event Type"
+    "Drift Power Delta %", "ABSVAL DPWR Delta", "Event Type", "Location"
 ], errors="ignore")
 
 # Define numeric columns to convert and round
@@ -43,7 +43,6 @@ df[numeric_cols] = df[numeric_cols].round(1)
 # Sidebar Filters
 st.sidebar.header("Filter Player Data")
 
-location = st.sidebar.selectbox("Select Location", ["All"] + sorted(df["Location"].unique()))
 name = st.sidebar.selectbox("Select Player", ["All"] + sorted(df["NAME"].unique()))
 grad_year = st.sidebar.selectbox("Select HS Grad Year", ["All"] + sorted(df["HS Grad Year"].unique()))
 event = st.sidebar.selectbox("Select Event", ["All"] + sorted(df["Event"].unique()))
@@ -95,9 +94,6 @@ if use_powerbm_slider:
 
 # Apply filters
 filtered_df = df.copy()
-
-if location != "All":
-    filtered_df = filtered_df[filtered_df["Location"] == location]
 
 if name != "All":
     filtered_df = filtered_df[filtered_df["NAME"] == name]
