@@ -26,7 +26,6 @@ df = df.drop(columns=[
 numeric_cols = [
     "Height (in)", "Weight",
     "10 yd Split (sec)", "20 yd Split(sec)", "30 Total",
-    "Green Box", "Green 3",
     "BJ Distance (ft)", "BJ Distance (in)",
     "CMJ GCT[sec]", "CMJ Height[in]", "Max CMJ Height[in]",
     "Peak Power[W]", "Peak Power BM[W/Kg]",
