@@ -47,7 +47,6 @@ location = st.sidebar.selectbox("Select Location", ["All"] + sorted(df["Location
 name = st.sidebar.selectbox("Select Player", ["All"] + sorted(df["NAME"].unique()))
 grad_year = st.sidebar.selectbox("Select HS Grad Year", ["All"] + sorted(df["HS Grad Year"].unique()))
 event = st.sidebar.selectbox("Select Event", ["All"] + sorted(df["Event"].unique()))
-event_type = st.sidebar.selectbox("Select Event Type", ["All"] + sorted(df["Event Type"].unique()))
 
 # Optional: 30 Total
 use_30_slider = st.sidebar.checkbox("Filter by 30 Total", value=False)
