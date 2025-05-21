@@ -60,6 +60,20 @@ if use_30_slider:
         value=(float(min_30), float(max_30)),
         step=0.1
     )
+# Optional: Broad Jump
+use_broad_slider = st.sidebar.checkbox("Filter by Broad Jump", value=False)
+if use_broad_slider:
+    min_30 = df["BJ Distance (in)"].min()
+    max_30 = df["BJ Distance (in)"].max()
+    avg_30 = df["BJ Distance (in)"].mean()
+    st.sidebar.markdown(f"**Average BJ Distance (in): {avg_broad:.1f} sec**")
+    broad_range = st.sidebar.slider(
+        "BJ Distance (in)",
+        min_value=float(min_30),
+        max_value=float(max_30),
+        value=(float(min_30), float(max_30)),
+        step=0.1
+    )
 
 # Optional: Peak Power
 use_power_slider = st.sidebar.checkbox("Filter by Peak Power", value=False)
@@ -107,6 +121,12 @@ if use_30_slider:
     filtered_df = filtered_df[
         (filtered_df["30 Total"] >= thirty_total_range[0]) &
         (filtered_df["30 Total"] <= thirty_total_range[1])
+    ]
+
+if use_broad_slider:
+    filtered_df = filtered_df[
+        (filtered_df["BJ Distance (in)"] >= thirty_total_range[0]) &
+        (filtered_df["BJ Distance (in)"] <= thirty_total_range[1])
     ]
 
 if use_power_slider:
