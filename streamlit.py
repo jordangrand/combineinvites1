@@ -66,14 +66,15 @@ if use_broad_slider:
     min_broad = df["BJ Distance (in)"].min()
     max_broad = df["BJ Distance (in)"].max()
     avg_broad = df["BJ Distance (in)"].mean()
-    st.sidebar.markdown(f"**Average BJ Distance (in): {avg_broad:.1f} sec**")
+    st.sidebar.markdown(f"**Average BJ Distance (in): {avg_broad:.1f} in**")
     broad_range = st.sidebar.slider(
         "BJ Distance (in)",
-        min_value=float(min_30),
-        max_value=float(max_30),
-        value=(float(min_30), float(max_30)),
+        min_value=float(min_broad),
+        max_value=float(max_broad),
+        value=(float(min_broad), float(max_broad)),
         step=0.1
     )
+
 
 # Optional: Peak Power
 use_power_slider = st.sidebar.checkbox("Filter by Peak Power", value=False)
@@ -128,6 +129,7 @@ if use_broad_slider:
         (filtered_df["BJ Distance (in)"] >= broad_range[0]) &
         (filtered_df["BJ Distance (in)"] <= broad_range[1])
     ]
+
 
 if use_power_slider:
     filtered_df = filtered_df[
