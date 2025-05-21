@@ -63,9 +63,9 @@ if use_30_slider:
 # Optional: Broad Jump
 use_broad_slider = st.sidebar.checkbox("Filter by Broad Jump", value=False)
 if use_broad_slider:
-    min_30 = df["BJ Distance (in)"].min()
-    max_30 = df["BJ Distance (in)"].max()
-    avg_30 = df["BJ Distance (in)"].mean()
+    min_broad = df["BJ Distance (in)"].min()
+    max_broad = df["BJ Distance (in)"].max()
+    avg_broad = df["BJ Distance (in)"].mean()
     st.sidebar.markdown(f"**Average BJ Distance (in): {avg_broad:.1f} sec**")
     broad_range = st.sidebar.slider(
         "BJ Distance (in)",
@@ -125,8 +125,8 @@ if use_30_slider:
 
 if use_broad_slider:
     filtered_df = filtered_df[
-        (filtered_df["BJ Distance (in)"] >= thirty_total_range[0]) &
-        (filtered_df["BJ Distance (in)"] <= thirty_total_range[1])
+        (filtered_df["BJ Distance (in)"] >= broad_range[0]) &
+        (filtered_df["BJ Distance (in)"] <= broad_range[1])
     ]
 
 if use_power_slider:
