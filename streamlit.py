@@ -123,5 +123,4 @@ if use_powerbm_slider:
     ]
 
 # Display results
-st.subheader("Filtered Results")
 st.dataframe(filtered_df)
