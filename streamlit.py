@@ -19,7 +19,7 @@ df = df.drop(columns=[
     "Last Name", "First Name", "DPL ID", "BirthDate", "25 Total", "Agility Diff", "% Change", "Drift GCT Delta %", "Drift Used Area Delta %", "ABSVAL DUA Delta",
     "NAS CMJ Height", "NAS Peak Power[W]", "NAS Peak Power BM[W/Kg]",
     "AS CMJ Height", "AS Peak Power[W]", "AS Peak Power BM[W/Kg]",
-    "Drift Power Delta %", "ABSVAL DPWR Delta", "Event Type", "Location"
+    "Drift Power Delta %", "ABSVAL DPWR Delta", "Event Type", "Location", "Green Box", "Green 3"
 ], errors="ignore")
 
 # Define numeric columns to convert and round
